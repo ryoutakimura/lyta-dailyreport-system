@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.techacademy.constants.ErrorKinds;
 import com.techacademy.constants.ErrorMessage;
-
 import com.techacademy.entity.Employee;
 import com.techacademy.service.EmployeeService;
 import com.techacademy.service.UserDetail;
@@ -95,6 +95,20 @@ public class EmployeeController {
             return create(employee);
         }
 
+        return "redirect:/employees";
+    }
+
+    // 従業員更新画面
+    @GetMapping(value = "/{code}/update")
+    public String edit(@PathVariable String code, Model model) {
+        model.addAttribute("employee", employeeService.findByCode(code));
+        return "employees/update";
+    }
+
+    // 従業員更新処理
+    @PostMapping(value = "/{code}/update")
+    public String update(@PathVariable String code, @RequestParam("name") String name,
+            @RequestParam("password") String password, @RequestParam("role") String role, Model model) {
         return "redirect:/employees";
     }
 
