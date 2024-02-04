@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.techacademy.constants.ErrorKinds;
 import com.techacademy.constants.ErrorMessage;
@@ -100,15 +99,22 @@ public class EmployeeController {
 
     // 従業員更新画面
     @GetMapping(value = "/{code}/update")
-    public String edit(@PathVariable String code, Model model) {
-        model.addAttribute("employee", employeeService.findByCode(code));
+    public String edit(@PathVariable(required = false) String code, Model model) {
+        //詳細画面から遷移した場合はDBから検索した情報を渡す
+        if (code != null) {
+            model.addAttribute("employee", employeeService.findByCode(code));
+        }
         return "employees/update";
     }
 
     // 従業員更新処理
     @PostMapping(value = "/{code}/update")
-    public String update(@PathVariable String code, @RequestParam("name") String name,
-            @RequestParam("password") String password, @RequestParam("role") String role, Model model) {
+    public String update(@PathVariable String code, @Validated Employee employee, BindingResult res, Model model) {
+        //入力チェック
+        if (res.hasErrors()) {
+            return edit(null, model);
+        }
+
         return "redirect:/employees";
     }
 
