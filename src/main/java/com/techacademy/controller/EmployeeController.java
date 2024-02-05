@@ -100,20 +100,29 @@ public class EmployeeController {
     // 従業員更新画面
     @GetMapping(value = "/{code}/update")
     public String edit(@PathVariable(required = false) String code, Model model) {
-        //詳細画面から遷移した場合はDBから検索した情報を渡す
+        // 詳細画面から遷移した場合はDBから検索した情報を渡す
         if (code != null) {
             model.addAttribute("employee", employeeService.findByCode(code));
         }
+
         return "employees/update";
     }
 
     // 従業員更新処理
     @PostMapping(value = "/{code}/update")
     public String update(@PathVariable String code, @Validated Employee employee, BindingResult res, Model model) {
-        //入力チェック
+        // 入力チェック
         if (res.hasErrors()) {
             return edit(null, model);
         }
+
+        //パスワード入力チェックで失敗した場合は更新ページに留まり、成功した場合はDB更新して一覧ページに戻る
+        ErrorKinds result = employeeService.update(employee);
+        if (ErrorMessage.contains(result)) {
+            model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));
+            return edit(null,model);
+        }
+
 
         return "redirect:/employees";
     }
