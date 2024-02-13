@@ -22,6 +22,11 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
+    //日報をを１件検索
+    public Report getReport(Integer id) {
+        return reportRepository.findById(id).get();
+    }
+
 
 
 }
