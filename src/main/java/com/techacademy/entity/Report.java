@@ -28,9 +28,10 @@ public class Report {
     //主キー自動生成
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id=1;
+    private Integer id;
 
     //日付
+    @NotNull
     @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reportDate;
