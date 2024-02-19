@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -37,11 +38,13 @@ public class Report {
     private LocalDate reportDate;
 
     //タイトル
+    @NotEmpty
     @Column(columnDefinition="LONGTEXT")
     @Length(max=100)
     private String title;
 
     //内容
+    @NotEmpty
     @Column(columnDefinition="LONGTEXT")
     private String content;
 
