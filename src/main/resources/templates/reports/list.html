@@ -27,17 +27,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="report:${reportList}"　sec:authorize="hasAuthority('ADMIN')">
+                                        <tr th:each="report:${reportList}">
                                             <td class="align-middle" th:text="${report.employee.name}"></td>
                                             <td class="align-middle" th:text="${report.reportDate}"></td>
                                             <td class="align-middle" th:text="${report.title}"></td>
-                                            <td class="align-middle"><a th:href="@{/employees/{code}/(code=${report.employee.code})}" class="btn btn-primary">詳細</a></td>
-                                        </tr>
-                                        <tr sec:authorize="hasAuthority('GENERAL')">
-                                            <td class="align-middle" th:text="${report.employee.name}"></td>
-                                            <td class="align-middle" th:text="${report.reportDate}"></td>
-                                            <td class="align-middle" th:text="${report.title}"></td>
-                                            <td class="align-middle"><a th:href="@{/employees/{code}/(code=${report.employee.code})}" class="btn btn-primary">詳細</a></td>
+                                            <td class="align-middle"><a
+                                                    th:href="@{/employees/{code}/(code=${report.employee.code})}"
+                                                    class="btn btn-primary">詳細</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
