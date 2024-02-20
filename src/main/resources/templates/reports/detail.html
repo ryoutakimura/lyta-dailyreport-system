@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="common/header :: head_fragment(title=従業員詳細)"></head>
+<head th:replace="common/header :: head_fragment(title=日報詳細)"></head>
 
 <body class="h-100 overflow-hidden">
     <div class="row h-100">
@@ -54,7 +54,7 @@
                                 </table>
                                 <div class="mt-5 row g-1">
                                     <div class="col-auto">
-                                        <a th:href="@{/employees/{code}/update(code=${code})}" class="btn btn-primary">更新</a>
+                                        <a th:href="@{/reports/{id}/update(id=${id})}" class="btn btn-primary">更新</a>
                                     </div>
                                     <div class="col-auto">
                                         <form name="form" th:action="@{/employees/{code}/delete(code=${code})}"
