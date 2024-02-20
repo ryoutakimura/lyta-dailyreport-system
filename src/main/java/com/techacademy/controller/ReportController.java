@@ -90,10 +90,22 @@ public class ReportController {
 
     // 日報詳細画面
     @GetMapping(value = "/{id}/")
-    public String detail(@PathVariable(required = false) Integer id, Model model) {
+    public String detail(@PathVariable Integer id, Model model) {
 
         model.addAttribute("report", reportService.findByCode(id));
         return "reports/detail";
+    }
+
+    //日報更新画面
+    @GetMapping(value = "/{id}/update")
+    public String edit(@PathVariable(required = false) Integer id,Model model) {
+
+        //日報詳細画面から来た場合DBから検索した情報を渡す
+        if (id != null) {
+            model.addAttribute("report", reportService.findByCode(id));
+        }
+
+        return "reports/update";
     }
 
 }
