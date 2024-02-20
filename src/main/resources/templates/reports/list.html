@@ -32,7 +32,7 @@
                                             <td class="align-middle" th:text="${report.reportDate}"></td>
                                             <td class="align-middle" th:text="${report.title}"></td>
                                             <td class="align-middle"><a
-                                                    th:href="@{/employees/{code}/(code=${report.employee.code})}"
+                                                    th:href="@{/reports/{id}/(id=${report.id})}"
                                                     class="btn btn-primary">詳細</a></td>
                                         </tr>
                                     </tbody>
