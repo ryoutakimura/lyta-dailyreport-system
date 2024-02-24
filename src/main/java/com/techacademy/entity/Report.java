@@ -39,13 +39,14 @@ public class Report {
 
     //タイトル
     @NotEmpty
-    @Column(columnDefinition="LONGTEXT")
+    @Column(length = 100)
     @Length(max=100)
     private String title;
 
     //内容
     @NotEmpty
     @Column(columnDefinition="LONGTEXT")
+    @Length(max=600)
     private String content;
 
     //社員番号

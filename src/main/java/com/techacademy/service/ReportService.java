@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techacademy.constants.ErrorKinds;
+import com.techacademy.entity.Employee;
 import com.techacademy.entity.Report;
 import com.techacademy.repository.ReportRepository;
 
@@ -38,9 +39,9 @@ public class ReportService {
     }
 
     // ログインユーザーの日報をすべて取得
-    public List<Report> findByUser(UserDetail userDetail, int size) {
+    public List<Report> findByUser(UserDetail userDetail) {
         List<Report> report = new ArrayList<>();
-        for (int i = 1; i <= size; i++) {
+        for (int i = 1; i <= findAll().size(); i++) {
             if (userDetail.getEmployee().getCode().equals(findByCode((Integer) i).getEmployee().getCode())) {
                 report.add(findByCode(i));
             }
@@ -49,17 +50,29 @@ public class ReportService {
         return report;
     }
 
+    // 従業員の日報をすべて取得
+    public List<Report> findByEmployee(Employee employee) {
+        List<Report> report = new ArrayList<>();
+        for (int i = 1; i <= findAll().size(); i++) {
+            if (employee.getCode().equals(findByCode((Integer) i).getEmployee().getCode()))
+                report.add(findByCode(i));
+        }
+
+        return report;
+
+    }
+
     // 日報保存
     @Transactional
     public ErrorKinds save(Report report, UserDetail userDetail) {
 
-        //ログインユーザーの日報をすべて取得
+        // ログインユーザーの日報をすべて取得
         List<Report> loginUserReport = new ArrayList<>();
-        loginUserReport = findByUser(userDetail, (int) findAll().size());
+        loginUserReport = findByUser(userDetail);
 
         // 日付重複チェック
-        //　ログインユーザーの日報の日付と登録しようとしている日報の日付が重複した場合エラーとする
-        for (int i = 0; i < (int) loginUserReport.size() ; i++) {
+        // ログインユーザーの日報の日付と登録しようとしている日報の日付が重複した場合エラーとする
+        for (int i = 0; i < (int) loginUserReport.size(); i++) {
             if (loginUserReport.get(i).getReportDate().equals(report.getReportDate())) {
                 return ErrorKinds.DATECHECK_ERROR;
             }
@@ -76,7 +89,7 @@ public class ReportService {
 
     }
 
-    //　日報削除
+    // 日報削除
     @Transactional
     public void delete(Integer id) {
 
@@ -84,6 +97,36 @@ public class ReportService {
         LocalDateTime now = LocalDateTime.now();
         report.setUpdatedAt(now);
         report.setDeleteFlg(true);
+
+    }
+
+    // 日報更新
+    @Transactional
+    public ErrorKinds update(Report report, Employee employee, UserDetail userDetail) {
+
+        // 従業員の日報をすべて取得
+        List<Report> employeeReport = new ArrayList<>();
+        employeeReport = findByEmployee(employee);
+
+        // 日付重複チェック
+        for (int i = 0; i < (int) employeeReport.size(); i++) {
+            if (employeeReport.get(i).getReportDate().equals(report.getReportDate())) {
+                // 更新しようとしている日報の日付が変わらない場合はチェックしない
+                if (employeeReport.get(i).getId().equals(report.getId())) {
+                    break;
+                } else {
+                    // 更新しようとしている日付が既に登録されている場合エラーとする
+                    return ErrorKinds.DATECHECK_ERROR;
+                }
+            }
+        }
+
+        report.setEmployee(employee);
+        LocalDateTime now = LocalDateTime.now();
+        report.setUpdatedAt(now);
+        reportRepository.save(report);
+
+        return ErrorKinds.SUCCESS;
 
     }
 
