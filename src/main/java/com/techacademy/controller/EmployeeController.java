@@ -116,7 +116,9 @@ public class EmployeeController {
             return edit(null, model);
         }
 
+
         //パスワード入力チェックで失敗した場合は更新ページに留まり、成功した場合はDB更新して一覧ページに戻る
+        employee.setCreatedAt(employeeService.findByCode(code).getCreatedAt());
         ErrorKinds result = employeeService.update(employee);
         if (ErrorMessage.contains(result)) {
             model.addAttribute(ErrorMessage.getErrorName(result), ErrorMessage.getErrorValue(result));

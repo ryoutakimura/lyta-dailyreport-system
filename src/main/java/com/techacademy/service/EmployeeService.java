@@ -58,11 +58,9 @@ public class EmployeeService {
         // パスワードの空白チェック
         if ("".equals(employee.getPassword())) {
             // パスワードが空白の場合、DBに登録されているパスワードを設定する（＝パスワード変更なし）
-            System.out.println("PASSなし");
             employee.setPassword(findByCode(employee.getCode()).getPassword());
         } else {
             // パスワードが空白でない場合、パスワードの文字チェックを行う
-            System.out.println("PASSあり");
             ErrorKinds result = employeePasswordCheck(employee);
             if (ErrorKinds.CHECK_OK != result) {
                 return result;
@@ -70,7 +68,6 @@ public class EmployeeService {
         }
 
         LocalDateTime now = LocalDateTime.now();
-        employee.setCreatedAt(now);
         employee.setUpdatedAt(now);
 
         employeeRepository.save(employee);
