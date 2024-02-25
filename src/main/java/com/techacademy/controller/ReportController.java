@@ -45,10 +45,6 @@ public class ReportController {
             model.addAttribute("reportList", reportService.findAll());
         } else {
             // GENERAL権限の場合自身の日報をVIEWに渡す
-            // model.addAttribute("listSize",
-            // reportService.findByName(userDetail.getUsername()).size());
-            // model.addAttribute("reportList",
-            // reportService.findByName(userDetail.getUsername()));
             model.addAttribute("listSize", reportService.findByEmployee(userDetail.getEmployee()).size());
             model.addAttribute("reportList", reportService.findByEmployee(userDetail.getEmployee()));
         }
@@ -61,11 +57,6 @@ public class ReportController {
     public String create(@ModelAttribute Report report, Model model, @AuthenticationPrincipal UserDetail userDetail) {
 
         // ログインユーザーの情報をVIEWに渡す
-        /*
-         * model.addAttribute("user",
-         * reportService.findByCode(Integer.parseInt(userDetail.getEmployee().getCode())
-         * ).getEmployee());
-         */
         model.addAttribute("user", userDetail.getEmployee());
         return "reports/new";
     }

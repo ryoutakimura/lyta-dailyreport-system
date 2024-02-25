@@ -38,43 +38,10 @@ public class ReportService {
         return report;
     }
 
-    // ログインユーザーの日報をすべて取得
-    /*
-    public List<Report> findByUser(UserDetail userDetail) {
-        List<Report> report = new ArrayList<>();
-        for (int i = 1; i <= findAll().size(); i++) {
-            System.out.println("あああああ");
-            System.out.println(findAll().size());
-            System.out.println(i);
-            System.out.println(findByCode((Integer) 2).getEmployee().getCode());
-            if (userDetail.getEmployee().getCode().equals(findByCode((Integer) i).getEmployee().getCode())) {
-                report.add(findByCode(i));
-            }
-        }
-
-        return report;
-    }
-    */
-
+    //従業員の日報をすべて取得
     public List<Report> findByEmployee(Employee employee){
         return reportRepository.findByEmployee(employee);
     }
-
-
-
-    // 従業員の日報をすべて取得
-    /*
-    public List<Report> findByEmployee(Employee employee) {
-        List<Report> report = new ArrayList<>();
-        for (int i = 1; i <= findAll().size(); i++) {
-            if (employee.getCode().equals(findByCode((Integer) i).getEmployee().getCode()))
-                report.add(findByCode(i));
-        }
-
-        return report;
-
-    }
-    */
 
     // 日報保存
     @Transactional
@@ -82,7 +49,6 @@ public class ReportService {
 
         // ログインユーザーの日報をすべて取得
         List<Report> loginUserReport = new ArrayList<>();
- //       loginUserReport = findByCode(userDetail.getEmployee().getCode());
         loginUserReport = findByEmployee(userDetail.getEmployee());
 
 
