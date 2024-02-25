@@ -39,9 +39,14 @@ public class ReportService {
     }
 
     // ログインユーザーの日報をすべて取得
+    /*
     public List<Report> findByUser(UserDetail userDetail) {
         List<Report> report = new ArrayList<>();
         for (int i = 1; i <= findAll().size(); i++) {
+            System.out.println("あああああ");
+            System.out.println(findAll().size());
+            System.out.println(i);
+            System.out.println(findByCode((Integer) 2).getEmployee().getCode());
             if (userDetail.getEmployee().getCode().equals(findByCode((Integer) i).getEmployee().getCode())) {
                 report.add(findByCode(i));
             }
@@ -49,8 +54,16 @@ public class ReportService {
 
         return report;
     }
+    */
+
+    public List<Report> findByEmployee(Employee employee){
+        return reportRepository.findByEmployee(employee);
+    }
+
+
 
     // 従業員の日報をすべて取得
+    /*
     public List<Report> findByEmployee(Employee employee) {
         List<Report> report = new ArrayList<>();
         for (int i = 1; i <= findAll().size(); i++) {
@@ -61,6 +74,7 @@ public class ReportService {
         return report;
 
     }
+    */
 
     // 日報保存
     @Transactional
@@ -68,7 +82,9 @@ public class ReportService {
 
         // ログインユーザーの日報をすべて取得
         List<Report> loginUserReport = new ArrayList<>();
-        loginUserReport = findByUser(userDetail);
+ //       loginUserReport = findByCode(userDetail.getEmployee().getCode());
+        loginUserReport = findByEmployee(userDetail.getEmployee());
+
 
         // 日付重複チェック
         // ログインユーザーの日報の日付と登録しようとしている日報の日付が重複した場合エラーとする
