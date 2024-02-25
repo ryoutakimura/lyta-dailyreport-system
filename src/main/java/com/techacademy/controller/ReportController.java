@@ -45,10 +45,12 @@ public class ReportController {
             model.addAttribute("reportList", reportService.findAll());
         } else {
             // GENERAL権限の場合自身の日報をVIEWに渡す
-            model.addAttribute("listSize",
-                    reportService.findByUser(userDetail).size());
-            model.addAttribute("reportList",
-                    reportService.findByUser(userDetail));
+            // model.addAttribute("listSize",
+            // reportService.findByName(userDetail.getUsername()).size());
+            // model.addAttribute("reportList",
+            // reportService.findByName(userDetail.getUsername()));
+            model.addAttribute("listSize", reportService.findByEmployee(userDetail.getEmployee()).size());
+            model.addAttribute("reportList", reportService.findByEmployee(userDetail.getEmployee()));
         }
 
         return "reports/list";
@@ -57,9 +59,14 @@ public class ReportController {
     // 日報新規登録画面
     @GetMapping(value = "/add")
     public String create(@ModelAttribute Report report, Model model, @AuthenticationPrincipal UserDetail userDetail) {
+
         // ログインユーザーの情報をVIEWに渡す
-        model.addAttribute("user",
-                reportService.findByCode(Integer.parseInt(userDetail.getEmployee().getCode())).getEmployee());
+        /*
+         * model.addAttribute("user",
+         * reportService.findByCode(Integer.parseInt(userDetail.getEmployee().getCode())
+         * ).getEmployee());
+         */
+        model.addAttribute("user", userDetail.getEmployee());
         return "reports/new";
     }
 
@@ -107,7 +114,7 @@ public class ReportController {
         if (id != null) {
             model.addAttribute("report", reportService.findByCode(id));
         } else {
-            //日報更新処理に失敗した場合は従業員の名前のみ渡す
+            // 日報更新処理に失敗した場合は従業員の名前のみ渡す
             model.addAttribute("username", username);
         }
         return "reports/update";
@@ -118,7 +125,7 @@ public class ReportController {
     public String update(@PathVariable String id, @Validated Report report, BindingResult res,
             @AuthenticationPrincipal UserDetail userDetail, Model model) {
 
-        //日報の従業員情報を取得
+        // 日報の従業員情報を取得
         Employee employee = employeeService.findByCode(id);
         // 入力チェック
         if (res.hasErrors()) {
